@@ -9,7 +9,7 @@ import ca.on.listech.todo_compose.util.Constants.LIST_ARGUMENT_KEY
 import ca.on.listech.todo_compose.util.Constants.LIST_SCREEN
 
 fun NavGraphBuilder.ListComposable(
-    navigateToTaskScreen: (Int) -> Unit
+    navigateToTaskScreen: (taskID: Int) -> Unit
 ) {
     composable(
         route = LIST_SCREEN,
