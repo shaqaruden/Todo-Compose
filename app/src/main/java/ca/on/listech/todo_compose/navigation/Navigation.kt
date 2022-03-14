@@ -6,16 +6,20 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import ca.on.listech.todo_compose.navigation.destinations.ListComposable
 import ca.on.listech.todo_compose.navigation.destinations.TaskComposable
+import ca.on.listech.todo_compose.ui.viewmodels.SharedViewModel
 import ca.on.listech.todo_compose.util.Constants.LIST_SCREEN
 
 @Composable
-fun SetupNavigation (navController: NavHostController) {
+fun SetupNavigation (navController: NavHostController, sharedViewModel: SharedViewModel) {
     val screen = remember(navController) {
         Screens(navController = navController)
     }
 
     NavHost(navController = navController, startDestination = LIST_SCREEN) {
-        ListComposable(navigateToTaskScreen = screen.task)
+        ListComposable(
+            navigateToTaskScreen = screen.task,
+            sharedViewModel = sharedViewModel
+        )
         TaskComposable(navigateToListScreen = screen.list)
     }
 

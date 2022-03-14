@@ -25,11 +25,34 @@ import ca.on.listech.todo_compose.ui.theme.LARGE_PADDING
 import ca.on.listech.todo_compose.ui.theme.TOP_APP_BAR_HEIGHT
 import ca.on.listech.todo_compose.ui.theme.topAppBarBackgroundColor
 import ca.on.listech.todo_compose.ui.theme.topAppBarContentColor
+import ca.on.listech.todo_compose.ui.viewmodels.SharedViewModel
+import ca.on.listech.todo_compose.util.SearchAppBarState
+import ca.on.listech.todo_compose.util.TrailingIconState
 
 @Composable
-fun ListAppBar() {
-//    DefaultListAppBar(onSearchClicked = {}, onSortClicked = {}, onDeleteClicked = {})
-    SearchAppBar(text = "", onTextChange = {}, onCloseClicked = { /*TODO*/ }, onSearchClicked = {})
+fun ListAppBar(
+    sharedViewModel: SharedViewModel,
+    searchAppBarState: SearchAppBarState,
+    searchTextState: String
+) {
+    when (searchAppBarState) {
+        SearchAppBarState.CLOSED ->
+            DefaultListAppBar(
+                onSearchClicked = { sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED },
+                onSortClicked = {},
+                onDeleteClicked = {}
+            )
+        else ->
+            SearchAppBar(
+                text = searchTextState,
+                onTextChange = { sharedViewModel.searchTextState.value = it},
+                onCloseClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
+
+                    sharedViewModel.searchTextState.value = ""
+                },
+                onSearchClicked = {})
+    }
 }
 
 @Composable
@@ -157,6 +180,10 @@ fun SearchAppBar(
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
+    var trailingIconState by remember {
+        mutableStateOf(TrailingIconState.READY_TO_CLOSE)
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -190,7 +217,22 @@ fun SearchAppBar(
                 }
             },
             trailingIcon = {
-                IconButton(onClick = { onCloseClicked() }) {
+                IconButton(onClick = {
+                    when(trailingIconState) {
+                        TrailingIconState.READY_TO_CLEAR -> {
+                            onTextChange("")
+                            trailingIconState = TrailingIconState.READY_TO_CLOSE
+                        }
+                        TrailingIconState.READY_TO_CLOSE -> {
+                            if(text.isNotEmpty()) {
+                                onTextChange("")
+                            } else {
+                                onCloseClicked()
+                                trailingIconState = TrailingIconState.READY_TO_CLEAR
+                            }
+                        }
+                    }
+                }) {
                     Icon(
                         imageVector = Icons.Filled.Close,
                         contentDescription = stringResource(R.string.search_trailing_icon),

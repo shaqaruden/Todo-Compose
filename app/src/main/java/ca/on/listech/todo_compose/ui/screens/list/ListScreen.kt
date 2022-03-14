@@ -7,17 +7,30 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ca.on.listech.todo_compose.R
 import ca.on.listech.todo_compose.ui.theme.fabBackgroundColor
+import ca.on.listech.todo_compose.ui.viewmodels.SharedViewModel
+import ca.on.listech.todo_compose.util.SearchAppBarState
 
 @Composable
-fun ListScreen(navigateToTaskScreen: (taskID: Int) -> Unit) {
+fun ListScreen(
+    navigateToTaskScreen: (taskID: Int) -> Unit,
+    sharedViewModel: SharedViewModel
+) {
+    val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
+    val searchTextState: String by sharedViewModel.searchTextState
+
     Scaffold(
         topBar = {
-                 ListAppBar()
+                 ListAppBar(
+                     sharedViewModel = sharedViewModel,
+                     searchAppBarState = searchAppBarState,
+                     searchTextState = searchTextState
+                 )
         },
         floatingActionButton = {
             ListFAB(onFABClicked = navigateToTaskScreen)
@@ -40,10 +53,4 @@ fun ListFAB(onFABClicked: (taskID: Int) -> Unit) {
         )
 
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun ListScreenPreview() {
-    ListScreen(navigateToTaskScreen = {})
 }
