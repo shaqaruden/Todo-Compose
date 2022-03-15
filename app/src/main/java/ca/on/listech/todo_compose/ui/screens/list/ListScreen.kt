@@ -1,6 +1,5 @@
 package ca.on.listech.todo_compose.ui.screens.list
 
-import android.util.Log
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -13,7 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import ca.on.listech.todo_compose.R
 import ca.on.listech.todo_compose.ui.theme.fabBackgroundColor
 import ca.on.listech.todo_compose.ui.viewmodels.SharedViewModel
@@ -45,7 +43,7 @@ fun ListScreen(
         }
     ) {
         ListContent(
-            todoTasks = allTasks,
+            request = allTasks,
             navigateToTaskScreen = navigateToTaskScreen
         )
     }

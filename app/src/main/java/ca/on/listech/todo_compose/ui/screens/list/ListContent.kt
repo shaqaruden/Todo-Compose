@@ -18,20 +18,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import ca.on.listech.todo_compose.data.models.Priority
 import ca.on.listech.todo_compose.data.models.TodoTask
 import ca.on.listech.todo_compose.ui.theme.*
+import ca.on.listech.todo_compose.util.RequestState
 
 @Composable
 fun ListContent(
-    todoTasks: List<TodoTask>,
+    request: RequestState<List<TodoTask>>,
     navigateToTaskScreen: (taskID: Int) -> Unit
 ) {
-    if(todoTasks.isEmpty()) {
-        EmptyContent()
-    } else {
-        LazyColumn {
-            items(items = todoTasks, key = { it.id}) {
-                TaskItem(todoTask = it, navigateToTaskScreen = navigateToTaskScreen)
+    when (request) {
+        is RequestState.Success -> {
+            if(request.data.isEmpty()) {
+                EmptyContent()
+            } else {
+                LazyColumn {
+                    items(items = request.data, key = { it.id}) {
+                        TaskItem(todoTask = it, navigateToTaskScreen = navigateToTaskScreen)
+                    }
+                }
             }
         }
+
+        is RequestState.Loading -> Text("Loading...") // Would be replaced with skeleton shimmer composable
     }
 }
 
