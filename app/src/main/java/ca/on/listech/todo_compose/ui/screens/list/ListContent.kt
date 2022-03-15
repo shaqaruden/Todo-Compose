@@ -24,9 +24,13 @@ fun ListContent(
     todoTasks: List<TodoTask>,
     navigateToTaskScreen: (taskID: Int) -> Unit
 ) {
-    LazyColumn {
-        items(items = todoTasks, key = { it.id}) {
-            TaskItem(todoTask = it, navigateToTaskScreen = navigateToTaskScreen)
+    if(todoTasks.isEmpty()) {
+        EmptyContent()
+    } else {
+        LazyColumn {
+            items(items = todoTasks, key = { it.id}) {
+                TaskItem(todoTask = it, navigateToTaskScreen = navigateToTaskScreen)
+            }
         }
     }
 }
