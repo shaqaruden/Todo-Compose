@@ -12,4 +12,7 @@
 
     <string name="sad_face">Sad Face</string>
     <string name="no_tasks">No Tasks Found</string>
+
+    <string name="new_task_title">Add Task</string>
+    <string name="back_to_tasks">Back to Tasks Screen</string>
 </resources>

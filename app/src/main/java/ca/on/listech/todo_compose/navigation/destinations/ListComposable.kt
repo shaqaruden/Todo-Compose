@@ -9,7 +9,7 @@ import ca.on.listech.todo_compose.ui.viewmodels.SharedViewModel
 import ca.on.listech.todo_compose.util.Constants.LIST_ARGUMENT_KEY
 import ca.on.listech.todo_compose.util.Constants.LIST_SCREEN
 
-fun NavGraphBuilder.ListComposable(
+fun NavGraphBuilder.listComposable(
     navigateToTaskScreen: (taskID: Int) -> Unit,
     sharedViewModel: SharedViewModel
 ) {

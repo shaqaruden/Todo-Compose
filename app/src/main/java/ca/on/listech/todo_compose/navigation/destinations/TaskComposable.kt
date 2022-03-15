@@ -10,7 +10,7 @@ import ca.on.listech.todo_compose.util.Constants.LIST_SCREEN
 import ca.on.listech.todo_compose.util.Constants.TASK_ARGUMENT_KEY
 import ca.on.listech.todo_compose.util.Constants.TASK_SCREEN
 
-fun NavGraphBuilder.TaskComposable(
+fun NavGraphBuilder.taskComposable(
     navigateToListScreen: (Action) -> Unit
 ) {
     composable(
@@ -19,7 +19,7 @@ fun NavGraphBuilder.TaskComposable(
             type = NavType.IntType
         })
     ) {
-
+        val taskID = it.arguments!!.getInt(TASK_ARGUMENT_KEY)
     }
 }
 

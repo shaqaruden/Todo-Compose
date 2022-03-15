@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import ca.on.listech.todo_compose.navigation.destinations.ListComposable
-import ca.on.listech.todo_compose.navigation.destinations.TaskComposable
+import ca.on.listech.todo_compose.navigation.destinations.listComposable
+import ca.on.listech.todo_compose.navigation.destinations.taskComposable
 import ca.on.listech.todo_compose.ui.viewmodels.SharedViewModel
 import ca.on.listech.todo_compose.util.Constants.LIST_SCREEN
 
@@ -16,11 +16,11 @@ fun SetupNavigation (navController: NavHostController, sharedViewModel: SharedVi
     }
 
     NavHost(navController = navController, startDestination = LIST_SCREEN) {
-        ListComposable(
+        listComposable(
             navigateToTaskScreen = screen.task,
             sharedViewModel = sharedViewModel
         )
-        TaskComposable(navigateToListScreen = screen.list)
+        taskComposable(navigateToListScreen = screen.list)
     }
 
 }
