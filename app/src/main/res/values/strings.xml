@@ -15,4 +15,7 @@
 
     <string name="new_task_title">Add Task</string>
     <string name="back_to_tasks">Back to Tasks Screen</string>
+    <string name="delete_task">Delete Task</string>
+    <string name="update_task">Update Task</string>
+    <string name="cancel_changes">Cancel Changes and Close</string>
 </resources>
