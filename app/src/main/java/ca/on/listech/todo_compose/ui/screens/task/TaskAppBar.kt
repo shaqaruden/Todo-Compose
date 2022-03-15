@@ -18,8 +18,11 @@ import ca.on.listech.todo_compose.ui.theme.topAppBarContentColor
 import ca.on.listech.todo_compose.util.Action
 
 @Composable
-fun TaskAppBar(navigateToListScreen: (Action) -> Unit) {
-    NewTaskAppBar(navigateToListScreen)
+fun TaskAppBar(task: TodoTask?, navigateToListScreen: (Action) -> Unit) {
+    when(task) {
+        null -> NewTaskAppBar(navigateToListScreen)
+        else -> ExistingTaskAppBar(task, navigateToListScreen)
+    }
 }
 
 @Composable
