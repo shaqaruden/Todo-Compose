@@ -3,6 +3,8 @@ package ca.on.listech.todo_compose.ui.screens.list
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -18,8 +20,15 @@ import ca.on.listech.todo_compose.data.models.TodoTask
 import ca.on.listech.todo_compose.ui.theme.*
 
 @Composable
-fun ListContent() {
-
+fun ListContent(
+    todoTasks: List<TodoTask>,
+    navigateToTaskScreen: (taskID: Int) -> Unit
+) {
+    LazyColumn {
+        items(items = todoTasks, key = { it.id}) {
+            TaskItem(todoTask = it, navigateToTaskScreen = navigateToTaskScreen)
+        }
+    }
 }
 
 @Composable
