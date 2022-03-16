@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">To-Do Compose</string>
     <string name="list_screen_title">Tasks</string>
     <string name="add_task">Add Task</string>
@@ -18,4 +18,5 @@
     <string name="delete_task">Delete Task</string>
     <string name="update_task">Update Task</string>
     <string name="cancel_changes">Cancel Changes and Close</string>
+    <string name="priority_dropdown">Toggle Priority Dropdown</string>
 </resources>
