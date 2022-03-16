@@ -19,4 +19,6 @@
     <string name="update_task">Update Task</string>
     <string name="cancel_changes">Cancel Changes and Close</string>
     <string name="priority_dropdown">Toggle Priority Dropdown</string>
+    <string name="title_textfield_label">Title</string>
+    <string name="description_textfield_label">Description</string>
 </resources>

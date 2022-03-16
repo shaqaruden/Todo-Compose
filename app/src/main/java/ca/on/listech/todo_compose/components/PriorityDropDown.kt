@@ -12,18 +12,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ca.on.listech.todo_compose.R
 import ca.on.listech.todo_compose.data.models.Priority
-import ca.on.listech.todo_compose.ui.theme.LARGE_PADDING
-import ca.on.listech.todo_compose.ui.theme.PRIORITY_DROPDOWN_HEIGHT
-import ca.on.listech.todo_compose.ui.theme.PRIORITY_INDICATOR_SIZE
+import ca.on.listech.todo_compose.ui.theme.*
 
 @Composable
 fun PriorityDropDown(
+    modifier: Modifier = Modifier,
     priority: Priority,
     onPrioritySelected: (Priority) -> Unit
 ) {
@@ -31,15 +31,18 @@ fun PriorityDropDown(
     val angle: Float by animateFloatAsState(targetValue = if (expanded) 180f else 0f)
 
     Row(
-        modifier = Modifier
+        modifier = modifier
+            .padding(top = MEDIUM_PADDING)
             .fillMaxWidth()
             .height(PRIORITY_DROPDOWN_HEIGHT)
+            .clip(MaterialTheme.shapes.small)
             .clickable { expanded = true }
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
+                color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled),
+                shape = MaterialTheme.shapes.small
             ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Canvas(modifier = Modifier
             .padding(LARGE_PADDING)
@@ -55,7 +58,7 @@ fun PriorityDropDown(
         ) {
             Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = stringResource(id = R.string.priority_dropdown))
         }
-        DropdownMenu(modifier = Modifier.fillMaxWidth(), expanded = expanded, onDismissRequest = { expanded = false }) {
+        DropdownMenu(modifier = Modifier.fillMaxWidth(0.94f), expanded = expanded, onDismissRequest = { expanded = false }) {
             DropdownMenuItem(onClick = {
                 expanded = false
                 onPrioritySelected(Priority.LOW)
