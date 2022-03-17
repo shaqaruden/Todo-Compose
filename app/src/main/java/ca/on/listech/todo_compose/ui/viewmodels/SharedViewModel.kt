@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import ca.on.listech.todo_compose.data.models.Priority
 import ca.on.listech.todo_compose.data.models.TodoTask
 import ca.on.listech.todo_compose.data.repositories.TodoRepository
+import ca.on.listech.todo_compose.util.Action
 import ca.on.listech.todo_compose.util.Constants.MAX_TITLE_LENGTH
 import ca.on.listech.todo_compose.util.RequestState
 import ca.on.listech.todo_compose.util.SearchAppBarState
@@ -21,6 +22,8 @@ import javax.inject.Inject
 class SharedViewModel @Inject constructor(
     private val repository: TodoRepository
 ): ViewModel() {
+
+    val action: MutableState<Action> = mutableStateOf( Action.NO_ACTION)
 
     val id: MutableState<Int> = mutableStateOf(0)
     val title: MutableState<String> = mutableStateOf("")
@@ -55,6 +58,26 @@ class SharedViewModel @Inject constructor(
                 _task.value = it
             }
         }
+    }
+
+    private fun addTask() {
+        viewModelScope.launch {
+            val task = TodoTask(title = title.value, description = description.value, priority = priority.value)
+
+            repository.addTask(task)
+        }
+    }
+
+    fun handleDatabaseActions(action: Action) {
+        when (action) {
+            Action.ADD -> addTask()
+            Action.UPDATE -> {}
+            Action.DELETE -> {}
+            Action.DELETE_ALL -> {}
+            Action.UNDO -> {}
+             else  -> {}
+        }
+        this.action.value = Action.NO_ACTION
     }
 
     fun updateTask(task: TodoTask?) {
