@@ -1,5 +1,6 @@
 package ca.on.listech.todo_compose.navigation.destinations
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
@@ -28,7 +29,15 @@ fun NavGraphBuilder.taskComposable(
         sharedViewModel.getTask(taskID = taskID)
         val task by sharedViewModel.task.collectAsState()
 
-        TaskScreen(task, navigateToListScreen = navigateToListScreen)
+        LaunchedEffect(key1 = taskID) {
+            sharedViewModel.updateTask(task = task)
+        }
+
+        TaskScreen(
+            task = task,
+            navigateToListScreen = navigateToListScreen,
+            sharedViewModel = sharedViewModel
+        )
     }
 }
 

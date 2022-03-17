@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ca.on.listech.todo_compose.data.models.Priority
 import ca.on.listech.todo_compose.data.models.TodoTask
 import ca.on.listech.todo_compose.data.repositories.TodoRepository
 import ca.on.listech.todo_compose.util.RequestState
@@ -19,6 +20,11 @@ import javax.inject.Inject
 class SharedViewModel @Inject constructor(
     private val repository: TodoRepository
 ): ViewModel() {
+
+    val id: MutableState<Int> = mutableStateOf(0)
+    val title: MutableState<String> = mutableStateOf("")
+    val description: MutableState<String> = mutableStateOf("")
+    val priority: MutableState<Priority> = mutableStateOf(Priority.LOW)
 
     val searchAppBarState: MutableState<SearchAppBarState> = mutableStateOf(SearchAppBarState.CLOSED)
     val searchTextState: MutableState<String> = mutableStateOf("")
@@ -44,9 +50,23 @@ class SharedViewModel @Inject constructor(
 
     fun getTask(taskID: Int) {
         viewModelScope.launch {
-            repository.getTask(taskID).collect {
+            repository.getTask(taskID = taskID).collect {
                 _task.value = it
             }
+        }
+    }
+
+    fun updateTask(task: TodoTask?) {
+        if (task != null) {
+            id.value = task.id
+            title.value = task.title
+            description.value = task.description
+            priority.value = task.priority
+        } else {
+            id.value = 0
+            title.value = ""
+            description.value = ""
+            priority.value = Priority.LOW
         }
     }
 }
