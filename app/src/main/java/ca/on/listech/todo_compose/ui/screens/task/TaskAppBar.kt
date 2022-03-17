@@ -6,11 +6,12 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import ca.on.listech.todo_compose.R
+import ca.on.listech.todo_compose.components.Alert
 import ca.on.listech.todo_compose.data.models.Priority
 import ca.on.listech.todo_compose.data.models.TodoTask
 import ca.on.listech.todo_compose.ui.theme.topAppBarBackgroundColor
@@ -80,10 +81,24 @@ fun ExistingTaskAppBar(task: TodoTask, navigateToListScreen: (Action) -> Unit) {
         },
         backgroundColor = MaterialTheme.colors.topAppBarBackgroundColor,
         actions = {
-            DeleteAction(navigateToListScreen)
-            UpdateAction(navigateToListScreen)
+            ExistingTaskAppBarActions(task, navigateToListScreen)
         }
     )
+}
+
+@Composable
+private fun ExistingTaskAppBarActions(task: TodoTask, navigateToListScreen: (Action) -> Unit) {
+    var openDialog by remember { mutableStateOf(false) }
+    
+    Alert(
+        title = stringResource(R.string.remove_task, task.title),
+        message = stringResource(R.string.remove_task_confirmation, task.title),
+        openDialog = openDialog,
+        closeDialog = { openDialog = false },
+        onYesClicked = { navigateToListScreen(Action.DELETE) },
+    )
+    DeleteAction { openDialog = true }
+    UpdateAction(navigateToListScreen)
 }
 
 @Composable
@@ -98,8 +113,8 @@ fun CloseAction(onCloseClicked: (Action) -> Unit) {
 }
 
 @Composable
-fun DeleteAction(onDeleteClicked: (Action) -> Unit) {
-    IconButton(onClick = { onDeleteClicked(Action.DELETE) }) {
+fun DeleteAction(onDeleteClicked: () -> Unit) {
+    IconButton(onClick = { onDeleteClicked() }) {
         Icon(
             imageVector = Icons.Filled.Delete,
             contentDescription = stringResource(R.string.add_task),

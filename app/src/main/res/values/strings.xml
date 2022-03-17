@@ -23,4 +23,10 @@
     <string name="description_textfield_label">Description</string>
     <string name="field_validation_error">Title and Description cannot be empty</string>
     <string name="all_tasks_deleted">All Tasks Deleted</string>
+    <string name="answer_yes">Yes</string>
+    <string name="answer_no">No</string>
+
+    <string name="remove_task">Remove \'%1$s\'</string>
+    <string name="remove_task_confirmation">Are you sure you want to remove \'%1$s\'?</string>
+
 </resources>
