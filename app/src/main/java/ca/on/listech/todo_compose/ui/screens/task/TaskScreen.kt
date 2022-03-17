@@ -1,8 +1,13 @@
 package ca.on.listech.todo_compose.ui.screens.task
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import ca.on.listech.todo_compose.R
 import ca.on.listech.todo_compose.data.models.Priority
 import ca.on.listech.todo_compose.data.models.TodoTask
 import ca.on.listech.todo_compose.ui.viewmodels.SharedViewModel
@@ -18,9 +23,24 @@ fun TaskScreen(
     val description: String by sharedViewModel.description
     val priority: Priority by sharedViewModel.priority
 
+    val context = LocalContext.current
+
     Scaffold(
         topBar = {
-            TaskAppBar(task = task, navigateToListScreen = navigateToListScreen)
+            TaskAppBar(
+                task = task,
+                navigateToListScreen = {
+                    if (it == Action.NO_ACTION) {
+                        navigateToListScreen(it)
+                    } else {
+                        if(sharedViewModel.validateFields()) {
+                            navigateToListScreen(it)
+                        } else {
+                            displayToast(context)
+                        }
+                    }
+                }
+            )
         }
     ) {
         TaskContent(
@@ -32,4 +52,8 @@ fun TaskScreen(
             onPrioritySelected = { sharedViewModel.priority.value = it }
         )
     }
+}
+
+fun displayToast(context: Context) {
+    Toast.makeText(context, R.string.field_validation_error, Toast.LENGTH_SHORT).show()
 }

@@ -21,4 +21,5 @@
     <string name="priority_dropdown">Toggle Priority Dropdown</string>
     <string name="title_textfield_label">Title</string>
     <string name="description_textfield_label">Description</string>
+    <string name="field_validation_error">Title and Description cannot be empty</string>
 </resources>
