@@ -115,12 +115,18 @@ class SharedViewModel @Inject constructor(
         }
     }
 
+    private fun clearDatabase() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllTasks()
+        }
+    }
+
     fun handleDatabaseActions(action: Action) {
         when (action) {
             Action.ADD -> addTask()
             Action.UPDATE -> updateTask()
             Action.DELETE -> deleteTask()
-            Action.DELETE_ALL -> {}
+            Action.DELETE_ALL -> clearDatabase()
             Action.UNDO -> addTask()
              else  -> {}
         }
