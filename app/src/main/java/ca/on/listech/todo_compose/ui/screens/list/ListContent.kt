@@ -19,26 +19,51 @@ import ca.on.listech.todo_compose.data.models.Priority
 import ca.on.listech.todo_compose.data.models.TodoTask
 import ca.on.listech.todo_compose.ui.theme.*
 import ca.on.listech.todo_compose.util.RequestState
+import ca.on.listech.todo_compose.util.SearchAppBarState
 
 @Composable
 fun ListContent(
     request: RequestState<List<TodoTask>>,
+    searchRequest: RequestState<List<TodoTask>>,
+    searchAppBarState: SearchAppBarState,
     navigateToTaskScreen: (taskID: Int) -> Unit
 ) {
-    when (request) {
-        is RequestState.Success -> {
-            if(request.data.isEmpty()) {
-                EmptyContent()
-            } else {
-                LazyColumn {
-                    items(items = request.data, key = { it.id}) {
-                        TaskItem(todoTask = it, navigateToTaskScreen = navigateToTaskScreen)
-                    }
-                }
+    if(searchAppBarState == SearchAppBarState.TRIGGERED) {
+        if(searchRequest is RequestState.Success) {
+            ListItems(tasks = searchRequest.data, navigateToTaskScreen = navigateToTaskScreen)
+        }
+    } else {
+        if(request is RequestState.Success) {
+            ListItems(tasks = request.data, navigateToTaskScreen = navigateToTaskScreen)
+        }
+    }
+//    when (request) {
+//        is RequestState.Success -> {
+//            if(request.data.isEmpty()) {
+//                EmptyContent()
+//            } else {
+//                LazyColumn {
+//                    items(items = request.data, key = { it.id}) {
+//                        TaskItem(todoTask = it, navigateToTaskScreen = navigateToTaskScreen)
+//                    }
+//                }
+//            }
+//        }
+//
+//        is RequestState.Loading -> Text("Loading...") // Would be replaced with skeleton shimmer composable
+//    }
+}
+
+@Composable
+fun ListItems(tasks: List<TodoTask>, navigateToTaskScreen: (taskID: Int) -> Unit) {
+    if(tasks.isEmpty()) {
+        EmptyContent()
+    } else {
+        LazyColumn {
+            items(items = tasks, key = { it.id}) {
+                TaskItem(todoTask = it, navigateToTaskScreen = navigateToTaskScreen)
             }
         }
-
-        is RequestState.Loading -> Text("Loading...") // Would be replaced with skeleton shimmer composable
     }
 }
 
