@@ -25,33 +25,36 @@ import ca.on.listech.todo_compose.util.SearchAppBarState
 fun ListContent(
     request: RequestState<List<TodoTask>>,
     searchRequest: RequestState<List<TodoTask>>,
+    lowPriorityTasks: List<TodoTask>,
+    highPriorityTasks: List<TodoTask>,
+    sortState: RequestState<Priority>,
     searchAppBarState: SearchAppBarState,
-    navigateToTaskScreen: (taskID: Int) -> Unit
+    navigateToTaskScreen: (taskID: Int) -> Unit,
 ) {
-    if(searchAppBarState == SearchAppBarState.TRIGGERED) {
-        if(searchRequest is RequestState.Success) {
-            ListItems(tasks = searchRequest.data, navigateToTaskScreen = navigateToTaskScreen)
-        }
-    } else {
-        if(request is RequestState.Success) {
-            ListItems(tasks = request.data, navigateToTaskScreen = navigateToTaskScreen)
+ {}
+    if(sortState is RequestState.Success) {
+        when {
+            searchAppBarState == SearchAppBarState.TRIGGERED -> {
+                if (searchRequest is RequestState.Success) {
+                    ListItems(tasks = searchRequest.data, navigateToTaskScreen = navigateToTaskScreen)
+                }
+            }
+
+            sortState.data == Priority.NONE -> {
+                if (request is RequestState.Success) {
+                    ListItems(tasks = request.data, navigateToTaskScreen = navigateToTaskScreen)
+                }
+            }
+
+            sortState.data == Priority.LOW -> {
+                ListItems(tasks = lowPriorityTasks, navigateToTaskScreen = navigateToTaskScreen)
+            }
+
+            sortState.data == Priority.HIGH -> {
+                ListItems(tasks = highPriorityTasks, navigateToTaskScreen = navigateToTaskScreen)
+            }
         }
     }
-//    when (request) {
-//        is RequestState.Success -> {
-//            if(request.data.isEmpty()) {
-//                EmptyContent()
-//            } else {
-//                LazyColumn {
-//                    items(items = request.data, key = { it.id}) {
-//                        TaskItem(todoTask = it, navigateToTaskScreen = navigateToTaskScreen)
-//                    }
-//                }
-//            }
-//        }
-//
-//        is RequestState.Loading -> Text("Loading...") // Would be replaced with skeleton shimmer composable
-//    }
 }
 
 @Composable
