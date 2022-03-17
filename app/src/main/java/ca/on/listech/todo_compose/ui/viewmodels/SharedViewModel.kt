@@ -12,6 +12,7 @@ import ca.on.listech.todo_compose.util.Constants.MAX_TITLE_LENGTH
 import ca.on.listech.todo_compose.util.RequestState
 import ca.on.listech.todo_compose.util.SearchAppBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -61,17 +62,33 @@ class SharedViewModel @Inject constructor(
     }
 
     private fun addTask() {
-        viewModelScope.launch {
-            val task = TodoTask(title = title.value, description = description.value, priority = priority.value)
+        viewModelScope.launch(Dispatchers.IO) {
+            val task = TodoTask(
+                title = title.value,
+                description = description.value,
+                priority = priority.value
+            )
 
             repository.addTask(task)
+        }
+    }
+
+    private fun updateTask() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val task = TodoTask(
+                id = id.value,
+                title = title.value,
+                description = description.value,
+                priority = priority.value
+            )
+            repository.updateTask(task)
         }
     }
 
     fun handleDatabaseActions(action: Action) {
         when (action) {
             Action.ADD -> addTask()
-            Action.UPDATE -> {}
+            Action.UPDATE -> updateTask()
             Action.DELETE -> {}
             Action.DELETE_ALL -> {}
             Action.UNDO -> {}
@@ -80,7 +97,7 @@ class SharedViewModel @Inject constructor(
         this.action.value = Action.NO_ACTION
     }
 
-    fun updateTask(task: TodoTask?) {
+    fun selectTask(task: TodoTask?) {
         if (task != null) {
             id.value = task.id
             title.value = task.title
