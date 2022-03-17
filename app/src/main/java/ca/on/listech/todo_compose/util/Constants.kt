@@ -9,4 +9,6 @@ object Constants {
 
     const val LIST_ARGUMENT_KEY = "action"
     const val TASK_ARGUMENT_KEY = "taskID"
+
+    const val MAX_TITLE_LENGTH = 20
 }
