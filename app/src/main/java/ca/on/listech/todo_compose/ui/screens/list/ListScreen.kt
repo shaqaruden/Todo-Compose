@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ListScreen(
+    action: Action,
     navigateToTaskScreen: (taskID: Int) -> Unit,
     sharedViewModel: SharedViewModel
 ) {
@@ -23,7 +24,11 @@ fun ListScreen(
         sharedViewModel.readSortState()
     }
 
-    val action by sharedViewModel.action
+    LaunchedEffect(key1 = action) {
+        sharedViewModel.handleDatabaseActions(action)
+    }
+
+
 
     val allTasks by sharedViewModel.allTasks.collectAsState()
     val searchedTasks by sharedViewModel.searchedTasks.collectAsState()
@@ -36,7 +41,7 @@ fun ListScreen(
 
     DisplaySnackBar(
         scaffoldState = scaffoldState,
-        handleDatabaseActions = { sharedViewModel.handleDatabaseActions(action) },
+        onComplete = { sharedViewModel.action.value = it },
         onRestoreClicked = {
           sharedViewModel.action.value = it
         },
@@ -91,12 +96,12 @@ fun ListFAB(onFABClicked: (taskID: Int) -> Unit) {
 @Composable
 fun DisplaySnackBar(
     scaffoldState: ScaffoldState,
-    handleDatabaseActions: () -> Unit,
+    onComplete: (Action) -> Unit,
     onRestoreClicked: (action: Action) -> Unit,
     taskTitle: String,
     action: Action
 ) {
-    handleDatabaseActions()
+
 
     val scope = rememberCoroutineScope()
     LaunchedEffect(key1 = action) {
@@ -112,6 +117,7 @@ fun DisplaySnackBar(
                     onRestoreClicked = onRestoreClicked
                 )
             }
+            onComplete(Action.NO_ACTION)
         }
     }
 }

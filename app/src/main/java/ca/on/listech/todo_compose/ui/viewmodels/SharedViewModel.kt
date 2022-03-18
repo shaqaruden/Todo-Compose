@@ -163,9 +163,8 @@ class SharedViewModel @Inject constructor(
             Action.DELETE -> deleteTask()
             Action.DELETE_ALL -> clearDatabase()
             Action.UNDO -> addTask()
-             else  -> {}
+            else  -> {}
         }
-        this.action.value = Action.NO_ACTION
     }
 
     fun selectTask(task: TodoTask?) {
