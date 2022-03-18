@@ -3,9 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../layout/compose-model-1647559576411.xml" value="0.1" />
-        <entry key="../../../../layout/compose-model-1647560668416.xml" value="0.5869565217391305" />
         <entry key="..\:/Users/chad_gregory/AndroidStudioProjects/ToDoCompose/app/src/main/res/drawable/ic_filter_list.xml" value="0.1945" />
+        <entry key="..\:/Users/chad_gregory/AndroidStudioProjects/ToDoCompose/app/src/main/res/drawable/ic_logo_dark.xml" value="0.1525" />
+        <entry key="..\:/Users/chad_gregory/AndroidStudioProjects/ToDoCompose/app/src/main/res/drawable/ic_logo_light.xml" value="0.1" />
         <entry key="..\:/Users/chad_gregory/AndroidStudioProjects/ToDoCompose/app/src/main/res/drawable/ic_more_vertical.xml" value="0.1945" />
         <entry key="..\:/Users/chad_gregory/AndroidStudioProjects/ToDoCompose/app/src/main/res/drawable/ic_sad_face.xml" value="0.15" />
       </map>
