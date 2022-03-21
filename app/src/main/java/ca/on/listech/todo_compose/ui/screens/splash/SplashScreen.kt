@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ca.on.listech.todo_compose.R
 import ca.on.listech.todo_compose.ui.theme.LOGO_SIZE
@@ -43,6 +44,13 @@ fun SplashScreen(navigateToListScreen: () -> Unit) {
         delay(SPLASH_SCREEN_DELAY)
         navigateToListScreen()
     }
+
+    Splash(offsetState, alphaState)
+
+}
+
+@Composable
+fun Splash(offsetState: Dp, alphaState: Float) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -68,7 +76,7 @@ fun SplashScreen(navigateToListScreen: () -> Unit) {
 @Preview()
 private fun SplashScreenLightPreview() {
     ToDoComposeTheme() {
-        SplashScreen({})
+        Splash(0.dp, 1f)
     }
 }
 
@@ -76,6 +84,6 @@ private fun SplashScreenLightPreview() {
 @Preview()
 private fun SplashScreenDarkPreview() {
     ToDoComposeTheme(darkTheme = true) {
-        SplashScreen({})
+        Splash(0.dp, 1f)
     }
 }

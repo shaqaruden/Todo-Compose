@@ -14,8 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import ca.on.listech.todo_compose.R
 import ca.on.listech.todo_compose.data.models.Priority
@@ -30,10 +33,13 @@ fun PriorityDropDown(
     var expanded by remember { mutableStateOf(false) }
     val angle: Float by animateFloatAsState(targetValue = if (expanded) 180f else 0f)
 
+    var parentSize by remember { mutableStateOf(IntSize.Zero) }
+
     Row(
         modifier = modifier
             .padding(top = MEDIUM_PADDING)
             .fillMaxWidth()
+            .onGloballyPositioned { parentSize = it.size }
             .height(PRIORITY_DROPDOWN_HEIGHT)
             .clip(MaterialTheme.shapes.small)
             .clickable { expanded = true }
@@ -58,24 +64,15 @@ fun PriorityDropDown(
         ) {
             Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = stringResource(id = R.string.priority_dropdown))
         }
-        DropdownMenu(modifier = Modifier.fillMaxWidth(0.94f), expanded = expanded, onDismissRequest = { expanded = false }) {
-            DropdownMenuItem(onClick = {
-                expanded = false
-                onPrioritySelected(Priority.LOW)
-            }) {
-                PriorityItem(priority = Priority.LOW)
-            }
-            DropdownMenuItem(onClick = {
-                expanded = false
-                onPrioritySelected(Priority.MEDIUM)
-            }) {
-                PriorityItem(priority = Priority.MEDIUM)
-            }
-            DropdownMenuItem(onClick = {
-                expanded = false
-                onPrioritySelected(Priority.HIGH)
-            }) {
-                PriorityItem(priority = Priority.HIGH)
+        DropdownMenu(modifier = Modifier.width(with(LocalDensity.current) { parentSize.width.toDp() }), expanded = expanded, onDismissRequest = { expanded = false }) {
+
+            Priority.values().slice(0..2).forEach {
+                DropdownMenuItem(onClick = {
+                    expanded = false
+                    onPrioritySelected(it)
+                }) {
+                    PriorityItem(priority = it)
+                }
             }
         }
     }
