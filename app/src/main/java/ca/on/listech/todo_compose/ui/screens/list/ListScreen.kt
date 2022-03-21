@@ -68,6 +68,7 @@ fun ListScreen(
             onSwipeToDelete = { action, task ->
                 sharedViewModel.selectTask(task)
                 sharedViewModel.action.value = action
+                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
             }
         )
     }

@@ -29,7 +29,6 @@ import ca.on.listech.todo_compose.ui.theme.topAppBarContentColor
 import ca.on.listech.todo_compose.ui.viewmodels.SharedViewModel
 import ca.on.listech.todo_compose.util.Action
 import ca.on.listech.todo_compose.util.SearchAppBarState
-import ca.on.listech.todo_compose.util.TrailingIconState
 
 @Composable
 fun ListAppBar(
@@ -191,9 +190,6 @@ fun SearchAppBar(
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
-    var trailingIconState by remember {
-        mutableStateOf(TrailingIconState.READY_TO_CLOSE)
-    }
 
     Surface(
         modifier = Modifier
@@ -229,19 +225,10 @@ fun SearchAppBar(
             },
             trailingIcon = {
                 IconButton(onClick = {
-                    when(trailingIconState) {
-                        TrailingIconState.READY_TO_CLEAR -> {
-                            onTextChange("")
-                            trailingIconState = TrailingIconState.READY_TO_CLOSE
-                        }
-                        TrailingIconState.READY_TO_CLOSE -> {
-                            if(text.isNotEmpty()) {
-                                onTextChange("")
-                            } else {
-                                onCloseClicked()
-                                trailingIconState = TrailingIconState.READY_TO_CLEAR
-                            }
-                        }
+                    if(text.isNotEmpty()) {
+                        onTextChange("")
+                    } else {
+                        onCloseClicked()
                     }
                 }) {
                     Icon(
